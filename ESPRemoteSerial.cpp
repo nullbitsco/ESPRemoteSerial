@@ -33,6 +33,10 @@ void ESPRemoteSerial::begin(void) {
     }
     #endif
 
+    //todo
+    // Populate the html modification date based on build datetime
+    //sprintf(html_last_modified, "%s %s GMT", __DATE__, __TIME__);
+
     _logger.getAppender().push_back(new RollingFileAppender(_FILENAME, LOG_MAX_COLS, LOG_MAX_ROWS, true));
     _logger.addFormatterToAll([this](Print &output, Appender::Level level, const char *msg, va_list *args) {
 
@@ -69,8 +73,15 @@ void ESPRemoteSerial::begin(void) {
         _server->begin();
     }
 
-    //todo: replace with static assets in gzip etc form (for portability)
+    #ifdef SERVE_COMPRESSED
+    _server->on("/log", HTTP_GET, [this](AsyncWebServerRequest *request) {
+        AsyncWebServerResponse *response = request->beginResponse_P(200, "text/html", log_html_gz, log_html_gz_len);
+        response->addHeader("Content-Encoding", "gzip");
+        request->send(response);
+    });
+    #else
     _server->serveStatic("/log", SPIFFS, "/log.html");
+    #endif
 
     _server->on("/logs", HTTP_GET, [this](AsyncWebServerRequest *request) {
         if (!SPIFFS.exists("/default.log")) {
@@ -95,11 +106,15 @@ void ESPRemoteSerial::begin(void) {
     });
 
     _server->onNotFound([this](AsyncWebServerRequest *request) {
-        request->send(404, "text/plain", "404: Not found. Did you forget to upload log.html to the SPIFFS?");
+        request->send(404, "text/plain", "404: Not found. Are you at /log?");
 
     });
 
     print("ESPRemoteSerial initialized!");
+
+    #ifdef SERVE_COMPRESSED
+    print("Serving in compressed html mode.");
+    #endif
 }
 
 void ESPRemoteSerial::bind(AsyncWebServer* server) {
@@ -122,5 +137,5 @@ void ESPRemoteSerial::_removeLog(void) {
 }
 
 void ESPRemoteSerial::_notFound(AsyncWebServerRequest *request) {
-    request->send(404, "text/plain", "404: Not found. Did you forget to upload log.html to the SPIFFS?");
+    request->send(404, "text/plain", "404: Not found. Are you at /log? Did you forget to upload log.html to the SPIFFS?");
 }

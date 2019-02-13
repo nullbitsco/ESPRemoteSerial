@@ -11,6 +11,7 @@
 
 #define USE_NTPCLIENT       // Use NTP in log timestamp
 #define CLEAR_ON_BOOT       // Clear the previous log on boot
+#define SERVE_COMPRESSED    // Serve an embedded version of log.html
 #define LOG_MAX_ROWS 30     // Maximum number of rows in log
 #define LOG_MAX_COLS 128    // Maximum number of cols in log
 
@@ -45,6 +46,8 @@ private:
     String _formattedDate;
     String _dayStamp;
     String _timeStamp;
+
+    char log_last_modified[50];
 
     #ifdef USE_NTPCLIENT
     int _TZoffset = 0;

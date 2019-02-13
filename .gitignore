@@ -54,3 +54,4 @@ dkms.conf
 # Minify build artifacts & node packages
 util/comp/
 node_modules/
+util/package-lock.json
