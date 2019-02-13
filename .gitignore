@@ -50,3 +50,7 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# Minify build artifacts & node packages
+util/comp/
+node_modules/
