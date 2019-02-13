@@ -1,0 +1,21 @@
+#######################################
+# Syntax Coloring Map For ESPRemoteSerial
+####################################### 
+# Class
+#######################################
+
+ESPRemoteSerial	KEYWORD1
+
+#######################################
+# Methods and Functions 
+#######################################	
+
+setTZOffset		KEYWORD2
+begin			KEYWORD2
+bind			KEYWORD2
+
+#######################################
+# Constants
+#######################################
+
+REMOTESERIAL	LITERAL1

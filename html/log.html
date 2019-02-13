@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html charset="UTF-8">
+<head>
+  <meta name="viewport">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-PDle/QlgIONtM1aqA2Qemk5gPOE7wFq8+Em+G/hmo5Iq0CCmYZLv3fVRDJ4MMwEA" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/js/bootstrap.min.js" integrity="sha384-7aThvCh9TypR7fIc2HV4O/nFMVCBwyIUKL8XCtKE+8xgCgl/PQGuFsvShjr74PBp" crossorigin="anonymous"></script>
+
+<title>ESP8266 Network Monitor</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <h1> ESP8266 Network Monitor</h1>
+    </div>
+    <br>
+    <div class="row">
+
+      <div class="col-xs-5">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <button class="btn btn-outline-secondary" onclick="changeUpdate()" type="button">Set</button>
+          </div>
+          <input id="updateRate" type="number" min="0" class="form-control" placeholder="Update rate (ms)" aria-label="" aria-describedby="basic-addon1">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" onclick="clearLog()" type="button">Clear Log</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xs-7">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <input id="autoUpdate" type="checkbox" checked> Auto update
+            </div>
+          </div>
+          <button class="btn btn-outline-secondary" onclick="resetESP()" type="button">Reboot</button>
+        </div>
+      </div>
+      
+    </div> <!-- row -->
+
+    <div class="row" style="background-color:rgb(220, 220, 220); border-radius: 2px;">
+      <div class="col-sm-12">
+        <pre id="logBody" style="padding-left: 15px;">
+        </pre>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+<script>
+
+var u = 2000;
+var shouldLoad = true;
+
+(function getLoop() {
+  if (autoUpdate.checked) {
+    viewLogs();
+  }
+  setTimeout(getLoop, u);
+})();
+
+function changeUpdate() {
+  u = updateRate.value;
+  console.log("Setting update rate to: " + u);
+}
+
+function viewLogs()
+{
+  if (shouldLoad) {
+    shouldLoad = false;
+    $.get(
+    "/logs",
+    {}
+  ).done(function(data){
+      logFormatter(data);
+      shouldLoad = true;
+      
+  }).fail(function(){
+    $("#logBody").text("Error loading log");
+    shouldLoad = true;
+  });
+  }
+}
+
+function logFormatter(data) {
+  var assembledHTML = ``;
+  var lines = data.split('\n');
+  for (var i=0; i < lines.length; i++) {
+    var formatted = ($.trim(lines[i])).split("|");
+    if (formatted.length > 1) {
+      //print the first section in color, by tag
+      assembledHTML += "<span style='color:rgb(0, 186, 161);'>" + formatted[0] + "|</span>";
+      for (var j=1; j<formatted.length; j++) {
+      //add the rest (for in case of recurring delimiters)
+        assembledHTML += "<span style='color:rgb(66, 66, 66);'>" + formatted[j] + "</span>";
+      }
+      assembledHTML += "<br>"
+    }
+    else {
+      //there was no proper formatting, just print normally.
+      if (formatted[i] != "" && formatted[i] != null) {
+        assembledHTML += "<span style='color:rgb(66, 66, 66);'>" + formatted[i] + "</span><br>";
+      }
+    }
+  }
+  logBody.innerHTML = assembledHTML;
+}
+
+function clearLog() {
+  $.ajax({
+    type: "DELETE",
+    url: "/logs",
+    data: "",
+    success: function(msg){
+        console.log("Log cleared. " + msg);
+    }
+  });
+}
+
+function resetESP() {
+  $.ajax({
+    type: "GET",
+    url: "/reset",
+    data: "",
+    success: function(msg){
+        console.log("ESP remotely reset. " + msg);
+        $("#logBody").text("ESP is remotely rebooting...")
+    }
+  });
+}
+
+</script>
+
+</html>
