@@ -86,9 +86,12 @@ void ESPRemoteSerial::begin(void) {
     _server->on("/logs", HTTP_GET, [this](AsyncWebServerRequest *request) {
         if (!SPIFFS.exists("/default.log")) {
             request->send(200, "text/html", "No log on device");
-        }
-        else {
-            request->send(SPIFFS, "/default.log");       
+        } else if (request->header("If-Modified-Since").equals(String(_logLastModified, HEX))) {
+            request->send(304);
+        } else {
+            AsyncWebServerResponse *response = request->beginResponse(SPIFFS, "/default.log", "text/html");
+            response->addHeader("Last-Modified", String(_logLastModified, HEX));
+            request->send(response);       
         }
 
     });
@@ -129,6 +132,7 @@ void ESPRemoteSerial::_clearLog(void) {
     file.print("129"); //default offset
     file.println(std::string(125, ' ').c_str());
     file.close();
+    _logLastModified = millis();
 }
 
 void ESPRemoteSerial::_removeLog(void) {

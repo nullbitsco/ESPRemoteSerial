@@ -70,7 +70,7 @@ gulp.task('buildfs_embeded', ['buildfs_inline'], function() {
  
 gulp.task('buildfs_inline', ['clean'], function() {
     return gulp.src('html/*.html', {cwd:'..'})
-        //.pipe(favicon())
+        .pipe(favicon(htmlPath))
         .pipe(inline({
             base: htmlPath,
             js: uglify,

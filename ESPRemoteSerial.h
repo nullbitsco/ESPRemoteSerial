@@ -11,7 +11,7 @@
 
 #define USE_NTPCLIENT       // Use NTP in log timestamp
 #define CLEAR_ON_BOOT       // Clear the previous log on boot
-#define SERVE_COMPRESSED    // Serve an embedded version of log.html
+#define SERVE_COMPRESSED    // Serve the embedded version of log.html
 #define LOG_MAX_ROWS 30     // Maximum number of rows in log
 #define LOG_MAX_COLS 128    // Maximum number of cols in log
 
@@ -38,6 +38,7 @@ public:
     template <class T, typename... Args> void print(T msg, ...) {
         va_list args;
         _logger.trace(msg, args);
+        _logLastModified = millis();
     }
 
 private:
@@ -47,7 +48,7 @@ private:
     String _dayStamp;
     String _timeStamp;
 
-    char log_last_modified[50];
+    unsigned long _logLastModified = 0;
 
     #ifdef USE_NTPCLIENT
     int _TZoffset = 0;

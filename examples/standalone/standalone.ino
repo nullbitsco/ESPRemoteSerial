@@ -46,7 +46,7 @@ void setup() {
     // Call ESPRemoteSerial::begin() after wifi connection has been set up.
     remoteSerial.begin();
 
-    remoteSerial.print("setup() complete"); // Use this and it prints just like serial!
+    remoteSerial.print("setup() complete | T = %u", millis());
 }
 
 void loop() {

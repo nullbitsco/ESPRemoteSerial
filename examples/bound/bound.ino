@@ -24,12 +24,12 @@ void setup() {
     AsyncWiFiManager wifiManager(&server,&dns);
     wifiManager.autoConnect("AutoConnectAP");
 
-    server.begin(); // Start the webserver like you normall would.
+    server.begin(); // Start the webserver like you normally would.
 
-    remoteSerial.bind(&server); // Bind the server after server.begin() 
+    remoteSerial.bind(&server); // Bind the server after calling server.begin() 
     remoteSerial.begin();
 
-    remoteSerial.print("setup() complete"); // Use this and it prints just like serial!
+    remoteSerial.print("setup() complete | T = %u", millis());
 }
 
 void loop() {
