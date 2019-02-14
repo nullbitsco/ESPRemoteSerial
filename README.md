@@ -17,6 +17,7 @@ Remote (network) serial monitor for ESP8266 &amp; ESP32.
 - [ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer)
 - [Log4Esp](https://github.com/hunsalz/log4Esp)
 - [NTPClient](https://github.com/taranais/NTPClient) (Only if compiled with `USE_NTPCLIENT`, which is on by default) 
+- SPIFFS (ESP internal) is required to store the local logfile. It won't yet work without the filesystem present.
 
 ## Usage
 See complete examples in the [examples](https://github.com/nullbitsco/ESPRemoteSerial/tree/master/examples) directory.
@@ -30,3 +31,4 @@ Visit `http://local_ip_or_host/log` (i.e. `192.168.1.101/log`) or the hostname i
 
 ## To-do
 1. Locally include Bootstrap and jQuery and inline them into log.html (for networks without internet access, since these files are currently fetched from their respective CDNs)
+1. RAMDisk logging as an option to eliminate the need for a SPIFFS partition 
