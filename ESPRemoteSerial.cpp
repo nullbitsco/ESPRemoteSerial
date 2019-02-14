@@ -33,10 +33,6 @@ void ESPRemoteSerial::begin(void) {
     }
     #endif
 
-    //todo
-    // Populate the html modification date based on build datetime
-    //sprintf(html_last_modified, "%s %s GMT", __DATE__, __TIME__);
-
     _logger.getAppender().push_back(new RollingFileAppender(_FILENAME, LOG_MAX_COLS, LOG_MAX_ROWS, true));
     _logger.addFormatterToAll([this](Print &output, Appender::Level level, const char *msg, va_list *args) {
 
