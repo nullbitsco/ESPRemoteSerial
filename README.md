@@ -9,7 +9,7 @@ Remote (network) serial monitor for ESP8266 &amp; ESP32.
 - Works with mDNS for accessing via a local hostname rather than IP address
 
 ## Installation
-1. Install the dependencies from the section below.
+1. Install the dependencies, and their required dependencies, from the section below.
 1. Add this library to the Arduino library, either by downloading it and adding it as a .zip, copying it locally into the libraries folder, or adding this repo address into the Arduino library manager list.
 1. `#include <ESPRemoteSerial.h>` in your .ino sketch file.
 
@@ -22,7 +22,7 @@ Remote (network) serial monitor for ESP8266 &amp; ESP32.
 ## Usage
 See complete examples in the [examples](https://github.com/nullbitsco/ESPRemoteSerial/tree/master/examples) directory.
 ### Printing to remote log
-Call `ESPRemoteSerial::print()` or `ESPRemoteSerial::println()`. Supports formatters in the same way `printf()` or `std::cout` does.
+Call `ESPRemoteSerial::print()`. Supports formatters in the same way `printf()` or `std::cout` does.
 ```C
 remoteSerial.print("setup() complete | T = %u", millis());
 ```
