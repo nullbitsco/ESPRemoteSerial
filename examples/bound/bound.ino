@@ -33,7 +33,6 @@ void setup() {
 }
 
 void loop() {
-    remoteSerial.print("loop() | T = %u", millis());
     digitalWrite(LED_PIN, LOW);
     delay(1000);
     digitalWrite(LED_PIN, HIGH);
