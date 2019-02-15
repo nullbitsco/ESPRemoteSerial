@@ -15,7 +15,7 @@ Remote (network) serial monitor for ESP8266 &amp; ESP32.
 
 ## Dependencies
 - [ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer)
-- [Log4Esp](https://github.com/hunsalz/log4Esp)
+- [Log4Esp](https://github.com/jaygreco/log4Esp)
 - [NTPClient](https://github.com/taranais/NTPClient) (Only if compiled with `USE_NTPCLIENT`, which is on by default) 
 - SPIFFS (ESP internal) is required to store the local logfile. It won't yet work without the filesystem present.
 
