@@ -18,7 +18,9 @@ void ESPRemoteSerial::setTZOffset(int offset) {
 }
 #endif
 
-void ESPRemoteSerial::begin(void) {
+void ESPRemoteSerial::begin(AsyncWebServer* server) {
+    _server = server;
+
     SPIFFS.begin();
     
     #ifdef CLEAR_ON_BOOT
@@ -60,14 +62,16 @@ void ESPRemoteSerial::begin(void) {
         output.print(buffer);
     });
 
-    // Start server if internal
-    if (_internal) {
-        if (NULL == _server) {
-            print(F("Starting internal AsyncWebServer"));
-            _server = new AsyncWebServer(80); 
-        }
+    if (_server == NULL) {
+        print(F("Starting internal AsyncWebServer"));
+        _server = new AsyncWebServer(80);
         _server->begin();
     }
+    else
+    {
+        _internal = false;
+    }
+    
 
     #ifdef SERVE_COMPRESSED
     _server->on("/log", HTTP_GET, [this](AsyncWebServerRequest *request) {
@@ -114,11 +118,6 @@ void ESPRemoteSerial::begin(void) {
     #ifdef SERVE_COMPRESSED
     print(F("Serving in compressed html mode."));
     #endif
-}
-
-void ESPRemoteSerial::bind(AsyncWebServer* server) {
-    _internal = false;
-    _server = server;
 }
 
 // Private

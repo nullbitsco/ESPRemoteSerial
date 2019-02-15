@@ -26,8 +26,7 @@ void setup() {
 
     server.begin(); // Start the webserver like you normally would.
 
-    remoteSerial.bind(&server); // Bind the server after calling server.begin() 
-    remoteSerial.begin();
+    remoteSerial.begin(&server);
 
     remoteSerial.print("setup() complete | T = %u", millis());
 }

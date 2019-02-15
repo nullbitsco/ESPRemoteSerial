@@ -34,8 +34,7 @@ public:
     void setTZOffset(int offset);
     #endif
 
-    void begin(void);
-    void bind(AsyncWebServer* server);
+    void begin(AsyncWebServer* server = NULL);
     template <class T, typename... Args> void print(T msg, Args... args) {
         _logger.trace(msg, args...);
         _logLastModified = millis();
