@@ -19,8 +19,6 @@ void ESPRemoteSerial::setTZOffset(int offset) {
 #endif
 
 void ESPRemoteSerial::begin(void) {
-    SPIFFS.begin();
-
     #ifdef CLEAR_ON_BOOT
     _removeLog();
     #endif
@@ -94,6 +92,7 @@ void ESPRemoteSerial::begin(void) {
 
     _server->on("/logs", HTTP_DELETE, [this](AsyncWebServerRequest *request) {
         _clearLog();
+        _removeLog();
         request->send(200);
     });
 
