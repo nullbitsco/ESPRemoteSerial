@@ -23,7 +23,7 @@ const inlineImages = require('gulp-css-base64');
 const favicon = require('gulp-base64-favicon');
 
 const intName = 'log.html.gz';
-const headerFileName = 'compressed_log.h';
+const headerFileName = 'compressedHTML.h';
 
 let htmlPath = path.join(__dirname, '../html/');
 let dataPath = path.join(__dirname, 'comp/');
