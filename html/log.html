@@ -108,7 +108,7 @@ function logFormatter(data) {
     var formatted = ($.trim(lines[i])).split("|");
     if (formatted.length > 1) {
       //print the first section in color, by tag
-      assembledHTML += "<span style='color:rgb(0, 186, 161);'>" + formatted[0] + "</span>";
+      assembledHTML += "<span style='color:rgb(0, 186, 161); 'class='badge badge-dark'>" + formatted[0] + "</span>";
       for (var j=1; j<formatted.length; j++) {
       //add the rest (for in case of recurring delimiters)
         assembledHTML += "|<span style='color:rgb(66, 66, 66);'>" + formatted[j] + "</span>";
