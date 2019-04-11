@@ -1,7 +1,7 @@
 # ESPRemoteSerial
 Remote (network) serial monitor for ESP8266 &amp; ESP32.
 
-![alt text](https://github.com/nullbitsco/ESPRemoteSerial/tree/master/img/ESPRemoteSerial.png "ESPRemoteSerial")
+![ESPRemoteSerial](https://raw.githubusercontent.com/nullbitsco/ESPRemoteSerial/master/img/ESPRemoteSerial.png "ESPRemoteSerial")
 
 ## Features
 - Self-hosted ESP network monitor that emulates the Arduino serial monitor
